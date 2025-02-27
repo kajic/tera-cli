@@ -4,9 +4,15 @@
 class {{ NAME }} < Formula
   desc "{{ DESCRIPTION }}"
   homepage "{{ HOMEPAGE }}"
-  url "{{ SITE }}/{{ REPO }}/releases/download/v{{ VERSION }}/{{ ARCHIVE | default(value=BIN ~"-macos-v" ~ VERSION) }}.tar.gz"
-  sha256 "{{ SHA256 }}"
   version "{{ VERSION }}"
+
+  if Hardware::CPU.arm?
+    url '{{ REPO_URL }}/releases/download/v{{ VERSION }}/tera-cli-aarch64-apple-darwin.tar.gz'
+    sha256 '{{ AARCH64_SHA256 }}'
+  else
+    url '{{ REPO_URL }}/releases/download/v{{ VERSION }}/tera-cli-x86_64-apple-darwin.tar.gz'
+    sha256 '{{ X86_64_SHA256 }}'
+  end
 
   def install
     bin.install "{{ BIN }}"
